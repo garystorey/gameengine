@@ -43,8 +43,8 @@ export class GameLoop {
     if (this.isInitial) this.isInitial = false;
 
     this.game.ctx?.clearRect(0, 0, this.game.size.x, this.game.size.y);
-    if (this.sprites.length) this.sprites.forEach((i) => i.update());
     this.animate(updated, this.game);
+    if (this.sprites.length) this.sprites.forEach((i) => i.update());
 
     this.rAF = requestAnimationFrame(this.update);
   }
