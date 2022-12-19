@@ -42,13 +42,12 @@ export class Sprite {
     if (this.coords.x + this.size.x >= this.game.size.x) {
       this.game.remove(this.id);
     }
-    // if they have moved off of the canvas in Y direction, move to other side
+    // if they have moved off of the canvas in Y direction, stop them
     if (this.coords.y >= this.game.size.y - this.size.y) {
-      //this.coords.y = -1 * this.size.y;
-      //this.coords.y =0
       this.movement.y = 0;
+      //could also wrap around instead
+      //this.coords.y = -1 * this.size.y;
     }
-    // draw the sprite
     this.draw();
   }
 }
