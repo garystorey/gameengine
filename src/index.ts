@@ -2,7 +2,7 @@ import { Game } from "./game";
 
 const sprites: SpriteInfo[] = [
   {
-    size: { x: 50,y: 50 },
+    size: { x: 50, y: 50 },
     coords: { x: 20, y: 0 },
     movement: { x: 0, y: 5 },
   },
@@ -26,19 +26,18 @@ const button = document.createElement("button");
 
 const handleButtonClick = (e: Event) => {
   e.preventDefault();
-  if (game.status==='running') {
+  if (game.status === "running") {
     game.stop();
   } else {
     game.start();
   }
-  button.innerText = game.status==='running' ? "Stop" : "Start";
+  button.innerText = game.status === "running" ? "Stop" : "Start";
 };
 
 button.setAttribute("type", "button");
-button.style.position = 'absolute'
-button.style.top = `50px`
-button.style.right = `50%`
-
+button.style.position = "absolute";
+button.style.top = `50px`;
+button.style.right = `50%`;
 
 button.addEventListener("click", handleButtonClick);
 body.appendChild(button);

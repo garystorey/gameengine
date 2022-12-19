@@ -1,7 +1,7 @@
 import { Game } from "./game";
 import { Sprite } from "./sprite";
 
-export type LoopFunction = (delta: number,game:Game) => void | (() => void);
+export type LoopFunction = (delta: number, game: Game) => void | (() => void);
 
 export class GameLoop {
   animate: LoopFunction;
@@ -9,7 +9,7 @@ export class GameLoop {
 
   rAF: number = 0;
   isInitial: boolean = true;
-  time:number =0
+  time: number = 0;
   lastTime: number = 0;
   delta: number = 0;
 
@@ -31,11 +31,11 @@ export class GameLoop {
     this.sprites = [...els, sprite];
   }
   remove(id: string) {
-    this.sprites = this.sprites.filter((s) => s.id !==id);
+    this.sprites = this.sprites.filter((s) => s.id === id);
   }
 
   update(time: number) {
-    this.time = time
+    this.time = time;
     const updated = time - this.lastTime;
     this.delta = this.isInitial || updated >= 2000 ? 0 : updated;
     this.lastTime = time;

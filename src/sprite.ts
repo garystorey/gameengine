@@ -29,24 +29,24 @@ export class Sprite {
 
   update() {
     // they dont have movement
-    if (this.movement.x === 0 && this.movement.y === 0){ 
-      this.draw()
+    if (this.movement.x === 0 && this.movement.y === 0) {
+      this.draw();
       return;
     }
 
     //move them based on their movement values
-    this.coords.x += this.movement.x+this.game.gravity.x;
-    this.coords.y += this.movement.y+this.game.gravity.y;
+    this.coords.x += this.movement.x + this.game.gravity.x;
+    this.coords.y += this.movement.y + this.game.gravity.y;
 
     // if they have moved off of the canvas in X direction, REMOVE them
     if (this.coords.x + this.size.x >= this.game.size.x) {
-      this.game.remove(this.id)
+      this.game.remove(this.id);
     }
     // if they have moved off of the canvas in Y direction, move to other side
     if (this.coords.y >= this.game.size.y - this.size.y) {
       //this.coords.y = -1 * this.size.y;
       //this.coords.y =0
-      this.movement.y=0
+      this.movement.y = 0;
     }
     // draw the sprite
     this.draw();
