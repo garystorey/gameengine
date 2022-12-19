@@ -42,6 +42,5 @@ button.style.right = `50%`;
 button.addEventListener("click", handleButtonClick);
 body.appendChild(button);
 
-button.innerText = "Start";
+button.innerText = game.status === "running" ? "Stop" : "Start";
 
-game.start();
