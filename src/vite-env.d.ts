@@ -1,16 +1,51 @@
 /// <reference types="vite/client" />
 
 type Coords = {
-    x: number,
-    y:number,
+  x: number
+  y: number
+}
+type Bounds = {
+  top: Coords,
+  right: Coords,
+  bottom: Coords,
+  left: Coords
 }
 
-type SpriteProps = {
-    game: Game;
-    coords: Coords;
-    size: Coords;
-    movement?: Coords;
-  };
-  
-type SpriteInfo = Omit<SpriteProps,'game'>
-  
+type ImageInfo = {
+  src: string
+  frames: number
+}
+
+type LoopFunction = (delta: number, game: Game) => void | (() => void)
+
+type SimpleSpriteProps = {
+  game: Game
+  coords: Coords
+  size: Coords
+  scale?: Coords
+  loop?: boolean
+  animationSpeed?:number
+  id?: string
+}
+
+type BaseSpriteProps = SimpleSpriteProps & {
+  image: ImageInfo
+}
+
+type SpriteProps = BaseSpriteProps & {
+  movement: Coords
+}
+
+type SpriteInfo = Omit<SpriteProps, "game"> 
+
+
+
+type Status = "idle" | "running"
+
+type GameProps = {
+  size: Coords
+  parent: HTMLElement
+  animate?: LoopFunction
+  sprites?: SpriteInfo[]
+  gravity: Coords
+}
