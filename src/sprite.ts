@@ -16,9 +16,10 @@ export class BaseSprite extends SimpleSprite {
     },
     scale = { x: 1, y: 1 },
     loop = true,
-    animationSpeed =1,id
+    animationSpeed = 1,
+    id,
   }: BaseSpriteProps) {
-    super({ game, size, coords, scale, loop,animationSpeed,id })
+    super({ game, size, coords, scale, loop, animationSpeed, id })
     this.image = new Image()
     this.image.src = image.src
     this.totalFrames = image.frames
@@ -27,23 +28,25 @@ export class BaseSprite extends SimpleSprite {
   }
 
   draw() {
+    if (this.game.status !== "running") return
     const frameSize = this.image.width / this.totalFrames
     const ctx = this.game.ctx as CanvasRenderingContext2D
     if (this.elapsedFrames >= this.animationSpeed) {
-      this.elapsedFrames=0
+      this.elapsedFrames = 0
     }
-    ctx.drawImage(
-      this.image,
-      this.currentFrame * frameSize,
-      0,
-      frameSize,
-      this.image.height,
-      this.coords.x,
-      this.coords.y,
-      frameSize* this.scale.x,
-      this.image.height * this.scale.y
-    )
-
+   
+      ctx.drawImage(
+        this.image,
+        this.currentFrame * frameSize,
+        0,
+        frameSize,
+        this.image.height,
+        this.coords.x,
+        this.coords.y,
+        frameSize * this.scale.x,
+        this.image.height * this.scale.y
+      )
+    
   }
 
   update() {
@@ -73,9 +76,10 @@ export class Sprite extends BaseSprite {
     },
     scale = { x: 1, y: 1 },
     loop = true,
-    animationSpeed =1,id
+    animationSpeed = 1,
+    id,
   }: SpriteProps) {
-    super({ game, size, coords, image, loop, scale, animationSpeed,id })
+    super({ game, size, coords, image, loop, scale, animationSpeed, id })
     this.movement = movement
   }
 

@@ -40,7 +40,7 @@ type SpriteInfo = Omit<SpriteProps, "game">
 
 
 
-type Status = "idle" | "running"
+type Status = "idle" | "running" | 'over'
 
 type GameProps = {
   size: Coords

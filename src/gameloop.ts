@@ -25,7 +25,7 @@ export class GameLoop {
   }
 
   add(sprite: Sprite) {
-    const els = [...this.sprites, sprite].sort((a,b) => a.coords.y<= b.coords.y ? -1: 1)
+    const els = [...this.sprites, sprite].sort((a, b) => (a.coords.y <= b.coords.y ? -1 : 1))
     this.sprites = els
   }
   remove(id: string) {
@@ -40,16 +40,19 @@ export class GameLoop {
     this.lastTime = time
 
     if (this.isInitial) this.isInitial = false
-
-    this.game.ctx?.clearRect(0, 0, this.game.size.x, this.game.size.y)
+    if (this.game.ctx) {
+      this.game.ctx.fillStyle = "#333"
+      this.game.ctx?.clearRect(0, 0, this.game.size.x, this.game.size.y)
+    }
     if (this.sprites.length) this.sprites.forEach((i) => i.update())
     this.animate(updated, this.game.gameloop)
-
-    this.rAF = requestAnimationFrame(this.update)
+    if (this.game.status === "running") {
+      this.rAF = requestAnimationFrame(this.update)
+    }
   }
 
   stop() {
+    this.isInitial = true
     cancelAnimationFrame(this.rAF)
-    this.rAF = -1
   }
 }
