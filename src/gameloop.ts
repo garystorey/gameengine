@@ -32,7 +32,7 @@ export class GameLoop {
     this.sprites = this.sprites.filter((s) => s.id !== id)
   }
 
-  update(time: number) {
+  private update(time: number) {
     this.time = time
     const updated = time - this.lastTime
     // console.log(updated)

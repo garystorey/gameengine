@@ -7,14 +7,21 @@ export function btwn(pMin = 1, pMax = 1_000_000_000){
     return Math.floor(Math.random() * (pMax+1 - pMin) + pMin);
 }
 
-let count =1
-export function createMummy():SpriteInfo {
+export function addMummys(num:number){
+  const a = []
+  for(let i=0;i<num;i++){
+    a.push(createMummy(i))
+  }
+  return a
+}
+
+export function createMummy(i:number):SpriteInfo {
     const x = btwn(50,250)
     return {
       coords: {x:btwn(15,150),y:btwn(10,450)},
       scale:{ x:.25,y:.25},
       loop:true,
-      id:`m${count++}`,
+      id:`m${i}`,
       animationSpeed: 1,
       image: {
         src: "mummy.png",

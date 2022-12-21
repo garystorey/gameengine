@@ -5,6 +5,7 @@ export class BaseSprite extends SimpleSprite {
   image: HTMLImageElement
   totalFrames: number = 1
   elapsedFrames: number = 0
+  loaded:boolean = false
 
   constructor({
     game,
@@ -22,12 +23,17 @@ export class BaseSprite extends SimpleSprite {
     super({ game, size, coords, scale, loop, animationSpeed, id })
     this.image = new Image()
     this.image.src = image.src
+    this.image.onload = () => {
+      this.loaded = true
+    }
+
     this.totalFrames = image.frames
     this.currentFrame = 0
     this.elapsedFrames = 0
   }
 
   draw() {
+    if (!this.loaded) return
     if (this.game.status !== "running") return
     const frameSize = this.image.width / this.totalFrames
     const ctx = this.game.ctx as CanvasRenderingContext2D
@@ -103,6 +109,7 @@ export class Sprite extends BaseSprite {
     }
     // if they have moved off of the canvas in Y direction, stop them
     if (this.bounds.bottom.y >= this.game.size.y - this.size.y) {
+      this.coords.y = -1.5 * this.size.y
       // this.movement.y = 0;
       //could also wrap around instead
     }
