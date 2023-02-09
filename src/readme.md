@@ -6,6 +6,10 @@ This was the start of a proof of concept. It isnt ready for prime time.
 2. create the game objects by passing size, gravity, sprites, etc
 3. call `game.start()` to start the loop.
 
+In this example, we create 50 sprites that will animate on the screen.
+Each loop there is a 10% chance one will be removed.
+Once there is only one sprite left, the game ends.
+
 ```ts
 import { Game } from "./game"
 import { addSprite, btwn } from "./utils"
