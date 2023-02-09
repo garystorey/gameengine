@@ -3,7 +3,7 @@
 This was the start of a proof of concept. It isnt ready for prime time.
 
 1. create an animation loop
-2. create the gane objects by passing size, gravity, sprites, etc
+2. create the game objects by passing size, gravity, sprites, etc
 3. call `game.start()` to start the loop.
 
 ```ts
