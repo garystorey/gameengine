@@ -12,16 +12,18 @@ export class Game {
   ctx: CanvasRenderingContext2D | null
   status: Status
 
-  constructor({ parent, size, animate = tick, sprites=[], gravity }: GameProps) {
+  sprites: Sprite[] = []
+
+  constructor({ parent, size, animate = tick, sprites = [], gravity }: GameProps) {
     this.size = size
     this.gravity = gravity
     this.loop = animate
     this.canvas = this.setCanvas(parent)
     this.ctx = this.canvas.getContext("2d")
-    this.gameloop = new GameLoop(this,this.loop)
+    this.gameloop = new GameLoop(this, this.loop)
     this.status = "idle"
     if (sprites.length) {
-       this.add(sprites)
+      this.add(sprites)
     }
   }
 
@@ -30,7 +32,7 @@ export class Game {
     el.id = "canvas"
     el.style.height = `${this.size.y}px`
     el.style.width = `${this.size.x}px`
-    el.style.backgroundColor = '#222'
+    el.style.backgroundColor = "#222"
     el.setAttribute("height", `${this.size.y}`)
     el.setAttribute("width", `${this.size.x}`)
     parent.appendChild(el)
@@ -39,20 +41,21 @@ export class Game {
 
   add(sprites: SpriteInfo[]) {
     for (let i = 0, len = sprites.length; i < len; i++) {
-        this.gameloop.add(new Sprite({ game: this, ...sprites[i] }))
+      const sprite = new Sprite({ game: this, ...sprites[i] })
+      const els = [...this.sprites, sprite].sort((a, b) => (a.coords.y <= b.coords.y ? -1 : 1))
+      this.sprites = els
     }
   }
+  remove(id: string) {
+    this.sprites = this.sprites.filter((s) => s.id !== id)
+  }
 
-  get(id:string) {
-    return this.gameloop.sprites.find((s) => s.id===id)
+  get(id: string) {
+    return this.sprites.find((s) => s.id === id)
   }
 
   debug() {
     console.log(this)
-  }
-
-  remove(id: string) {
-    this.gameloop.remove(id)
   }
 
   delta() {

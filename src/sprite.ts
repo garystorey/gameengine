@@ -5,7 +5,7 @@ export class BaseSprite extends SimpleSprite {
   image: HTMLImageElement
   totalFrames: number = 1
   elapsedFrames: number = 0
-  loaded:boolean = false
+  loaded: boolean = false
 
   constructor({
     game,
@@ -40,19 +40,18 @@ export class BaseSprite extends SimpleSprite {
     if (this.elapsedFrames >= this.animationSpeed) {
       this.elapsedFrames = 0
     }
-   
-      ctx.drawImage(
-        this.image,
-        this.currentFrame * frameSize,
-        0,
-        frameSize,
-        this.image.height,
-        this.coords.x,
-        this.coords.y,
-        frameSize * this.scale.x,
-        this.image.height * this.scale.y
-      )
-    
+
+    ctx.drawImage(
+      this.image,
+      this.currentFrame * frameSize,
+      0,
+      frameSize,
+      this.image.height,
+      this.coords.x,
+      this.coords.y,
+      frameSize * this.scale.x,
+      this.image.height * this.scale.y
+    )
   }
 
   update() {
@@ -103,15 +102,14 @@ export class Sprite extends BaseSprite {
       left: { x: this.coords.x, y: this.coords.y + this.size.y },
     }
 
-    // if they have moved off of the canvas in X direction, REMOVE them
+    // if they have moved off of the canvas in X direction, MOVE them
     if (this.bounds.right.x >= this.game.size.x) {
-      this.coords.x = -1.5 * this.size.x
+      this.coords.x = -1.5 * this.scale.x * this.size.x
     }
     // if they have moved off of the canvas in Y direction, stop them
     if (this.bounds.bottom.y >= this.game.size.y - this.size.y) {
-      this.coords.y = -1.5 * this.size.y
-      // this.movement.y = 0;
-      //could also wrap around instead
+      this.coords.y = -1.5 * this.scale.y * this.size.y
+      this.movement.y = 0
     }
   }
 }
