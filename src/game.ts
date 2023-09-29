@@ -78,8 +78,6 @@ export class Game {
 
   stop() {
     this.sprites.forEach((s) => {
-      s.elapsedFrames = 0
-      s.currentFrame = 0
       if (!s.loop) this.remove(s.id)
     })
     this.status = "idle"

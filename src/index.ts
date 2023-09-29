@@ -5,15 +5,15 @@ const animate = (game: Game) => {
   game.sprites.forEach((sprite) => {
     // if they have moved off of the canvas in X direction, move to the other side
     if (sprite.bounds.right.x >= sprite.game.size.x) {
-      sprite.coords.x = -1.5 * sprite.scale.x * sprite.size.x
+      sprite.coords.x = -1.25 * sprite.scale.x * sprite.size.x
     }
     // if they have moved off of the canvas in Y direction, stop them
     if (sprite.bounds.bottom.y >= sprite.game.size.y - sprite.size.y) {
-      sprite.coords.y = -1.5 * sprite.scale.y * sprite.size.y
+      sprite.coords.y = -1.25 * sprite.scale.y * sprite.size.y
       sprite.movement.y = -1
     }
     if (sprite.collidesWith.length) {
-      console.log(`${sprite.id} collides with ${sprite.collidesWith.map((s) => s.id).join(", ")}`)
+      // console.log(`${sprite.id} collides with ${sprite.collidesWith.map((s) => s.id).join(", ")}`)
     }
   })
 

@@ -64,6 +64,7 @@ export class GameLoop {
 
   stop() {
     this.isInitial = true
+    this.rAF = 0
     cancelAnimationFrame(this.rAF)
   }
 }
