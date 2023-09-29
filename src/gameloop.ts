@@ -28,22 +28,38 @@ export class GameLoop {
     }
   }
 
-  private update(time: number) {
+  private updateTime(time: number) {
     this.time = time
     const updated = time - this.lastTime
-
     this.delta = this.isInitial || updated >= 2000 ? 0 : updated
     this.lastTime = time
-
     if (this.isInitial) this.isInitial = false
+  }
 
+  private update(time: number) {
+    this.updateTime(time)
     this.resetScreen()
-    this.game.sprites.forEach((sprite) => sprite.update())
-    this.animate(this.delta, this.game)
+
+    this.game.sprites.forEach((sprite) => sprite.draw())
+
+    this.game.sprites = this.game.sprites.filter((sprite) => !sprite.destroy)
+    this.game.sprites.forEach((sprite) => {
+      sprite.update()
+      sprite.collidesWith = []
+      this.game.sprites.forEach((s) => {
+        if (s.id !== sprite.id && sprite.checkCollisionWith(s)) {
+          sprite.collidesWith.push(s)
+        }
+      })
+    })
+
+    this.animate(this.game)
 
     if (this.game.status === "running") {
       this.rAF = requestAnimationFrame(this.update)
+      return
     }
+    this.game.sprites.forEach((sprite) => (sprite.destroy = true))
   }
 
   stop() {

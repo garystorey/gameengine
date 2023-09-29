@@ -5,9 +5,9 @@ type Coords = {
   y: number
 }
 type Bounds = {
-  top: Coords,
-  right: Coords,
-  bottom: Coords,
+  top: Coords
+  right: Coords
+  bottom: Coords
   left: Coords
 }
 
@@ -16,7 +16,7 @@ type ImageInfo = {
   frames: number
 }
 
-type LoopFunction = (delta: number, game: Game) => void | (() => void)
+type LoopFunction = (game: Game) => void | (() => void)
 
 type SimpleSpriteProps = {
   game: Game
@@ -24,23 +24,23 @@ type SimpleSpriteProps = {
   size: Coords
   scale?: Coords
   loop?: boolean
-  animationSpeed?:number
+  animationSpeed?: number
   id?: string
+  type: string
 }
 
 type BaseSpriteProps = SimpleSpriteProps & {
   image: ImageInfo
+  type: string
 }
 
 type SpriteProps = BaseSpriteProps & {
   movement: Coords
 }
 
-type SpriteInfo = Omit<SpriteProps, "game"> 
+type SpriteInfo = Omit<SpriteProps, "game">
 
-
-
-type Status = "idle" | "running" | 'over'
+type Status = "idle" | "running" | "over"
 
 type GameProps = {
   size: Coords

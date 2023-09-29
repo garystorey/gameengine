@@ -19,8 +19,9 @@ export class BaseSprite extends SimpleSprite {
     loop = true,
     animationSpeed = 1,
     id,
+    type,
   }: BaseSpriteProps) {
-    super({ game, size, coords, scale, loop, animationSpeed, id })
+    super({ game, size, coords, scale, loop, animationSpeed, id, type })
     this.image = new Image()
     this.image.src = image.src
     this.image.onload = () => {
@@ -37,9 +38,6 @@ export class BaseSprite extends SimpleSprite {
     if (this.game.status !== "running") return
     const frameSize = this.image.width / this.totalFrames
     const ctx = this.game.ctx as CanvasRenderingContext2D
-    if (this.elapsedFrames >= this.animationSpeed) {
-      this.elapsedFrames = 0
-    }
 
     ctx.drawImage(
       this.image,
@@ -55,11 +53,17 @@ export class BaseSprite extends SimpleSprite {
   }
 
   update() {
-    this.draw()
     this.elapsedFrames++
 
     if (this.elapsedFrames >= this.animationSpeed) {
       this.currentFrame++
+    }
+    if (this.elapsedFrames >= this.animationSpeed) {
+      this.elapsedFrames = 0
+    }
+    if (this.currentFrame >= this.totalFrames) {
+      this.currentFrame = 0
+      if (!this.loop) this.destroy = true
     }
     if (this.currentFrame >= this.totalFrames && this.loop) {
       this.currentFrame = 0
@@ -69,6 +73,7 @@ export class BaseSprite extends SimpleSprite {
 
 export class Sprite extends BaseSprite {
   movement: Coords
+  collidesWith: Sprite[] = []
 
   constructor({
     game,
@@ -83,8 +88,9 @@ export class Sprite extends BaseSprite {
     loop = true,
     animationSpeed = 1,
     id,
+    type,
   }: SpriteProps) {
-    super({ game, size, coords, image, loop, scale, animationSpeed, id })
+    super({ game, size, coords, image, loop, scale, animationSpeed, id, type })
     this.movement = movement
   }
 
@@ -102,14 +108,20 @@ export class Sprite extends BaseSprite {
       left: { x: this.coords.x, y: this.coords.y + this.size.y },
     }
 
-    // if they have moved off of the canvas in X direction, MOVE them
-    if (this.bounds.right.x >= this.game.size.x) {
-      this.coords.x = -1.5 * this.scale.x * this.size.x
+    this.center.x = this.coords.x + (this.size.x / 2) * this.scale.x
+    this.center.y = this.coords.y + (this.size.y / 2) * this.scale.y
+  }
+
+  checkCollisionWith(sprite: Sprite) {
+    if (
+      this.bounds.left.x <= sprite.bounds.right.x &&
+      this.bounds.right.x >= sprite.bounds.left.x &&
+      this.bounds.top.y <= sprite.bounds.bottom.y &&
+      this.bounds.bottom.y >= sprite.bounds.top.y
+    ) {
+      this.collidesWith.push(sprite)
+      return true
     }
-    // if they have moved off of the canvas in Y direction, stop them
-    if (this.bounds.bottom.y >= this.game.size.y - this.size.y) {
-      this.coords.y = -1.5 * this.scale.y * this.size.y
-      this.movement.y = 0
-    }
+    return false
   }
 }

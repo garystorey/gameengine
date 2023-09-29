@@ -10,9 +10,20 @@ export class SimpleSprite {
   bounds: Bounds
   scale: Coords
   loop: boolean
+  destroy: boolean = false
   animationSpeed: number
+  type: string
 
-  constructor({ game, size = { x: 50, y: 50 }, coords = { x: 0, y: 0 }, scale = { x: 1, y: 1 }, loop = true, animationSpeed=1,id }: SimpleSpriteProps) {
+  constructor({
+    game,
+    size = { x: 50, y: 50 },
+    coords = { x: 0, y: 0 },
+    scale = { x: 1, y: 1 },
+    loop = true,
+    animationSpeed = 1,
+    id,
+    type,
+  }: SimpleSpriteProps) {
     this.id = id ?? nanoid()
     this.game = game
     this.coords = coords
@@ -27,6 +38,7 @@ export class SimpleSprite {
     }
     this.loop = loop
     this.animationSpeed = animationSpeed
+    this.type = type
   }
 
   debug() {

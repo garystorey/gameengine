@@ -6,7 +6,6 @@ This was the start of a proof of concept. It isnt ready for prime time.
 2. create the game object by passing size, gravity, sprites, etc
 3. call `game.start()` to start the loop.
 
-
 ## The Basics
 
 The `Game` class controls the game loop and handles animating the game objects.
@@ -26,7 +25,7 @@ const sprites: SpriteInfo[] = [{
   //...sprite information here
 }]
 
-const loop = (time:number) => {
+const loop = (game:Game) => {
   console.log('game loop logic here')
 }
 
@@ -47,20 +46,20 @@ Once your game is initialized, you have the following commands available on the 
 - `add` = add a new sprite
 - `remove` = remove an existing sprite
 - `get` = get a sprite by id
+- `getAllByType` = get all sprites by type (a custom string)
 - `status` = current status of the gameloop
 
-You also have access to the `gameloop` object and from it you can get the `sprites`. Ex game.gameloop.sprites[0]
-
+You also have access to the `game` object and from it you can get the `sprites`. Ex game.sprites[0]
 
 A `Sprite` is created for each entry in the `sprites` array. These sprites are based on the `SpriteInfo` type which contains following properties:
 
+- `id` = a unique id for the sprite. One will be generated if not supplied by the user.
+- `image` = an object that conatins the `src` of the image and the number of frames in the animations
 - `size`= an x/y value for the height and width of the frame
 - `coords` = an x/y value for where to place the sprite on the game screen
-- `image` = an object that conatins the `src` of the image and the number of frames in the animations
 - `scale` = an x/y value that determines if the sprite is scaled up or down. default: { x: 1, y: 1 }
-- `loop` = does the animation loop?
 - `animationSpeed` = how many frames to pass before updating the animations,
-- `id` = a unique id for the sprite. One will be generated if not supplied by the user.
+- `loop` = does the animation loop?
 
 **Note**: Both size, coords, and gravity expect x/y coordinates. There is a `Coords` ({x:number, y:number}) type added for convenience.
 
@@ -93,12 +92,12 @@ export function createSprite(i: number): SpriteInfo {
 
 
 const animate = () => {
-  if (game.gameloop.sprites.length === 1) {
+  if (game.sprites.length === 1) {
     game.stop()
     return
   }
   const chance = btwn(1, 100)
-  const val = btwn(1, 50)
+  const val = btwn(0, game.sprites.length)
   if (chance > 90) game.remove(`m${val}`)
 }
 
@@ -112,6 +111,7 @@ const game = new Game({
 
 game.start()
 ```
+
 ## TODO's
 
 - add multi animation sprites

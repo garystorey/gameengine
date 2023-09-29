@@ -14,7 +14,7 @@ export class Game {
 
   sprites: Sprite[] = []
 
-  constructor({ parent, size, animate = tick, sprites = [], gravity }: GameProps) {
+  constructor({ parent, size, animate = tick, sprites = [], gravity = { x: 0, y: 0 } }: GameProps) {
     this.size = size
     this.gravity = gravity
     this.loop = animate
@@ -47,11 +47,20 @@ export class Game {
     }
   }
   remove(id: string) {
+    const sprite = this.sprites.filter((s) => s.id === id)
+    sprite.forEach((s) => {
+      s.destroy = true
+      s.loop = false
+    })
     this.sprites = this.sprites.filter((s) => s.id !== id)
   }
 
   get(id: string) {
     return this.sprites.find((s) => s.id === id)
+  }
+
+  getAllByType(type: string) {
+    return this.sprites.filter((s) => s.type === type)
   }
 
   debug() {
@@ -68,6 +77,11 @@ export class Game {
   }
 
   stop() {
+    this.sprites.forEach((s) => {
+      s.elapsedFrames = 0
+      s.currentFrame = 0
+      if (!s.loop) this.remove(s.id)
+    })
     this.status = "idle"
     this.gameloop.stop()
   }
