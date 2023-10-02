@@ -20,8 +20,9 @@ export class BaseSprite extends SimpleSprite {
     animationSpeed = 1,
     id,
     type,
+    visible = true,
   }: BaseSpriteProps) {
-    super({ game, size, coords, scale, loop, animationSpeed, id, type })
+    super({ game, size, coords, scale, loop, animationSpeed, id, type, visible })
     this.image = new Image()
     this.image.src = image.src
     this.image.onload = () => {
@@ -35,6 +36,7 @@ export class BaseSprite extends SimpleSprite {
 
   draw() {
     if (!this.loaded) return
+    if (!this.visible) return
     if (this.game.status !== "running") return
     const frameSize = this.image.width / this.totalFrames
     const ctx = this.game.ctx as CanvasRenderingContext2D
@@ -63,7 +65,10 @@ export class BaseSprite extends SimpleSprite {
     }
     if (this.currentFrame >= this.totalFrames) {
       this.currentFrame = 0
-      if (!this.loop) this.destroy = true
+      if (!this.loop) {
+        this.destroy = true
+        this.visible = false
+      }
     }
     if (this.currentFrame >= this.totalFrames && this.loop) {
       this.currentFrame = 0
@@ -89,12 +94,14 @@ export class Sprite extends BaseSprite {
     animationSpeed = 1,
     id,
     type,
+    visible = true,
   }: SpriteProps) {
-    super({ game, size, coords, image, loop, scale, animationSpeed, id, type })
+    super({ game, size, coords, image, loop, scale, animationSpeed, id, type, visible })
     this.movement = movement
   }
 
   update() {
+    if (!this.visible) return
     super.update()
 
     //move them based on their movement values
@@ -103,9 +110,9 @@ export class Sprite extends BaseSprite {
 
     this.bounds = {
       top: { x: this.coords.x, y: this.coords.y },
-      right: { x: this.coords.x + this.size.x, y: this.coords.y },
-      bottom: { x: this.coords.x + this.size.x, y: this.coords.y + this.size.y },
-      left: { x: this.coords.x, y: this.coords.y + this.size.y },
+      right: { x: this.coords.x + this.size.x * this.scale.x, y: this.coords.y },
+      bottom: { x: this.coords.x + this.size.x * this.scale.x, y: this.coords.y + this.size.y * this.scale.y },
+      left: { x: this.coords.x, y: this.coords.y + this.size.y * this.scale.y },
     }
 
     this.center.x = this.coords.x + (this.size.x / 2) * this.scale.x
@@ -113,6 +120,7 @@ export class Sprite extends BaseSprite {
   }
 
   checkCollisionWith(sprite: Sprite) {
+    if (!this.visible) return
     if (
       this.bounds.left.x <= sprite.bounds.right.x &&
       this.bounds.right.x >= sprite.bounds.left.x &&

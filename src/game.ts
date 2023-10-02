@@ -1,4 +1,3 @@
-import { GameLoop } from "./gameloop"
 import { Sprite } from "./sprite"
 
 const tick = () => {}
@@ -6,25 +5,61 @@ const tick = () => {}
 export class Game {
   size: Coords
   gravity: Coords
-  loop: LoopFunction
-  gameloop: GameLoop
   canvas: HTMLCanvasElement
   ctx: CanvasRenderingContext2D | null
   status: Status
+  animate: LoopFunction
+
+  rAF: number = 0
+  isInitial: boolean = true
+  time: number = 0
+  lastTime: number = 0
+  delta: number = 0
 
   sprites: Sprite[] = []
 
   constructor({ parent, size, animate = tick, sprites = [], gravity = { x: 0, y: 0 } }: GameProps) {
     this.size = size
     this.gravity = gravity
-    this.loop = animate
+    this.animate = animate
+    this.update = this.update.bind(this)
     this.canvas = this.setCanvas(parent)
     this.ctx = this.canvas.getContext("2d")
-    this.gameloop = new GameLoop(this, this.loop)
     this.status = "idle"
     if (sprites.length) {
       this.add(sprites)
     }
+    return this
+  }
+
+  update(time: number) {
+    this.time = time
+    const updated = time - this.lastTime
+    this.delta = this.isInitial || updated >= 2000 ? 0 : updated
+    this.lastTime = time
+    if (this.isInitial) this.isInitial = false
+
+    //reset canvas
+    this.resetCanvas()
+    // remove old sprites
+    this.sprites = this.sprites.filter((sprite) => !sprite.destroy)
+    // draw the current update
+    this.sprites.forEach((sprite) => sprite.draw())
+    // do default udpates
+    this.sprites.forEach((sprite) => sprite.update())
+    // run the user updates
+    this.animate(this)
+
+    if (this.status === "running") {
+      this.rAF = requestAnimationFrame(this.update)
+      return
+    }
+    // if it hits here its not running, so stop
+    this.sprites.forEach((sprite) => {
+      sprite.destroy = true
+      sprite.loop = false
+      sprite.visible = false
+    })
   }
 
   setCanvas(parent: HTMLElement) {
@@ -38,6 +73,11 @@ export class Game {
     parent.appendChild(el)
     return el
   }
+  resetCanvas() {
+    if (!this.ctx) return
+    this.ctx.fillStyle = "#333"
+    this.ctx?.clearRect(0, 0, this.size.x, this.size.y)
+  }
 
   add(sprites: SpriteInfo[]) {
     for (let i = 0, len = sprites.length; i < len; i++) {
@@ -46,6 +86,7 @@ export class Game {
       this.sprites = els
     }
   }
+
   remove(id: string) {
     const sprite = this.sprites.filter((s) => s.id === id)
     sprite.forEach((s) => {
@@ -67,13 +108,9 @@ export class Game {
     console.log(this)
   }
 
-  delta() {
-    return this.gameloop.delta
-  }
-
   start() {
     this.status = "running"
-    this.gameloop.start()
+    this.rAF = requestAnimationFrame(this.update)
   }
 
   stop() {
@@ -81,6 +118,8 @@ export class Game {
       if (!s.loop) this.remove(s.id)
     })
     this.status = "idle"
-    this.gameloop.stop()
+    this.isInitial = true
+    this.rAF = 0
+    cancelAnimationFrame(this.rAF)
   }
 }

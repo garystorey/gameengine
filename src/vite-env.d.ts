@@ -27,6 +27,7 @@ type SimpleSpriteProps = {
   animationSpeed?: number
   id?: string
   type: string
+  visible: boolean
 }
 
 type BaseSpriteProps = SimpleSpriteProps & {

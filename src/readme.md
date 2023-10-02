@@ -6,7 +6,6 @@ This was the start of a proof of concept. It isnt ready for prime time.
 2. create the game object by passing size, gravity, sprites, etc
 3. call `game.start()` to start the loop.
 
-
 ## The Basics
 
 The `Game` class controls the game loop and handles animating the game objects.
@@ -49,8 +48,8 @@ Once your game is initialized, you have the following commands available on the 
 - `get` = get a sprite by id
 - `status` = current status of the gameloop
 
-You also have access to the `gameloop` object and from it you can get the `sprites`. Ex game.gameloop.sprites[0]
-
+You also have access to the `game` object and from it you can get the `sprites`.
+Ex: game.sprites[0]; game.get('player1'); game.getAllByType("player")
 
 A `Sprite` is created for each entry in the `sprites` array. These sprites are based on the `SpriteInfo` type which contains following properties:
 
@@ -112,6 +111,7 @@ const game = new Game({
 
 game.start()
 ```
+
 ## TODO's
 
 - add multi animation sprites

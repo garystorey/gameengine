@@ -13,6 +13,7 @@ export class SimpleSprite {
   destroy: boolean = false
   animationSpeed: number
   type: string
+  visible: boolean
 
   constructor({
     game,
@@ -23,8 +24,10 @@ export class SimpleSprite {
     animationSpeed = 1,
     id,
     type,
+    visible = true,
   }: SimpleSpriteProps) {
     this.id = id ?? nanoid()
+    this.visible = visible
     this.game = game
     this.coords = coords
     this.size = size
@@ -42,6 +45,6 @@ export class SimpleSprite {
   }
 
   debug() {
-    console.log
+    console.log(this)
   }
 }
