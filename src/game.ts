@@ -45,7 +45,7 @@ export class Game {
     this.sprites = this.sprites.filter((sprite) => !sprite.destroy)
     // draw the current update
     this.sprites.forEach((sprite) => sprite.draw())
-    // do default udpates
+    // do default updates
     this.sprites.forEach((sprite) => sprite.update())
     // run the user updates
     this.animate(this)
@@ -119,7 +119,7 @@ export class Game {
     })
     this.status = "idle"
     this.isInitial = true
-    this.rAF = 0
     cancelAnimationFrame(this.rAF)
+    this.rAF = 0
   }
 }

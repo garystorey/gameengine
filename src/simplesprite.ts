@@ -32,7 +32,7 @@ export class SimpleSprite {
     this.coords = coords
     this.size = size
     this.scale = scale
-    this.center = { x: (this.size.x / 2) * this.scale.x, y: (this.size.y / 2) * this.scale.y }
+    this.center = { x: this.coords.x + (this.size.x / 2) * this.scale.x, y: this.coords.y + (this.size.y / 2) * this.scale.y }
     this.bounds = {
       top: { x: this.coords.x, y: this.coords.y },
       right: { x: this.coords.x + this.size.x * this.scale.x, y: this.coords.y },
