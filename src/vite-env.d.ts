@@ -27,12 +27,11 @@ type SimpleSpriteProps = {
   animationSpeed?: number
   id?: string
   type: string
-  visible: boolean
+  visible?: boolean
 }
 
 type BaseSpriteProps = SimpleSpriteProps & {
   image: ImageInfo
-  type: string
 }
 
 type SpriteProps = BaseSpriteProps & {

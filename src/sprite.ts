@@ -59,8 +59,6 @@ export class BaseSprite extends SimpleSprite {
 
     if (this.elapsedFrames >= this.animationSpeed) {
       this.currentFrame++
-    }
-    if (this.elapsedFrames >= this.animationSpeed) {
       this.elapsedFrames = 0
     }
     if (this.currentFrame >= this.totalFrames) {
@@ -69,9 +67,6 @@ export class BaseSprite extends SimpleSprite {
         this.destroy = true
         this.visible = false
       }
-    }
-    if (this.currentFrame >= this.totalFrames && this.loop) {
-      this.currentFrame = 0
     }
   }
 }

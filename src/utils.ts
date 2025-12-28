@@ -43,7 +43,7 @@ export function createExplosion(sprite: Sprite): SpriteInfo {
   return {
     ...sprite,
     size: { x: 50, y: 50 },
-    coords: { x: sprite.center.x + 25 * sprite.scale.x, y: sprite.center.y + 25 * sprite.scale.y },
+    coords: { x: sprite.center.x - 25 * sprite.scale.x, y: sprite.center.y - 25 * sprite.scale.y },
     movement: { x: 0, y: 0 },
     loop: false,
     type: "explosion",
